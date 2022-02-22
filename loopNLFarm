@@ -1,0 +1,8 @@
+	while true do
+	local args = {
+		[1] = "swingKatana",
+	}
+
+		game:GetService("Players").maddable.ninjaEvent:FireServer(unpack(args))
+		wait(0.1)
+		end
