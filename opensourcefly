@@ -1,0 +1,134 @@
+
+
+
+local Key = "f" -- Lowercase Letter
+
+
+
+
+
+
+
+
+
+
+
+local Player = script.Parent.Parent
+repeat wait() until Player.Character and Player.Character:FindFirstChild('Humanoid')
+local Mouse = Player:GetMouse()
+local IsFlying = false
+local flyv
+local flyg
+local IsRunning = false
+local f = 0
+local Speed = 50
+local maxspeed = 100
+local wdown = false
+local sdown = false
+Mouse.KeyDown:Connect(function(key)
+	if key:lower() == Key then
+		if IsFlying then
+			IsFlying = false
+		    flyv:Destroy()
+			flyg:Destroy()
+		     
+			script.Parent.Parent.Character:WaitForChild('Humanoid').PlatformStand = false
+		else
+			IsFlying = true
+			 flyv = Instance.new("BodyVelocity")
+			
+			flyv.Parent = Player.Character:WaitForChild('Torso')
+			flyv.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+			
+			 flyg = Instance.new("BodyGyro")
+			flyg.Parent = Player.Character:WaitForChild('Torso')
+			flyg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+			flyg.P = 1000
+			flyg.D = 50
+			
+			script.Parent.Parent.Character:WaitForChild('Humanoid').PlatformStand = true
+		end
+	end
+end)
+
+
+
+Mouse.KeyDown:Connect(function(key)
+	if key:lower() == "w" then
+		if IsFlying then
+			wdown = true
+		end
+	end
+end)
+Mouse.KeyDown:Connect(function(key)
+	if key:lower() == "s" then
+		if IsFlying then
+			sdown = true
+		end
+	end
+end)
+Mouse.KeyUp:Connect(function(key)
+	if key:lower() == "w" then
+		if IsFlying then
+			wdown = false
+		end
+	end
+end)
+Mouse.KeyUp:Connect(function(key)
+	if key:lower() == "s" then
+		if IsFlying then
+			sdown = false
+		end
+	end
+end)
+
+spawn(function()
+	while true do
+		wait()
+	if IsFlying then
+		
+			flyg.CFrame = workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((f+0)*50*Speed/maxspeed),0,0) 
+				flyv.Velocity = workspace.CurrentCamera.CoordinateFrame.LookVector * Speed
+				wait(0.1)
+			if wdown then
+				Speed = Speed + 1
+				
+			elseif sdown then
+				Speed = Speed - 1
+			end
+			if Speed > maxspeed then
+				Speed = maxspeed
+				f = 1
+			else
+				f = 0
+			end
+				if Speed < 0 then
+				Speed = 0
+				f = 0
+			
+			end
+			
+		end
+	end
+end)
+
+
+
+
+
+
+
+
+script.Died.OnClientEvent:Connect(function()
+	if IsFlying then
+	IsFlying = false
+	flyg:Destroy()
+	flyv:Destroy()
+	end
+end)
+
+
+
+
+
+
