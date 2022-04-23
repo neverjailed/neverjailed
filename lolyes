@@ -1,0 +1,67 @@
+if game.PlaceId == 155615604 then
+	local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+	
+	local Window = Library.CreateLib("Darkware.xyz (PRISON LIFE)", "Sentinel")
+	--localplayer
+	local Tab = Window:NewTab("LocalPlayer")
+    local LocalPlayerSection = Tab:NewSection("Walkspeed/Jumppower")
+LocalPlayerSection:NewSlider("Walkspeed", "walk fast", 500, 16, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+LocalPlayerSection:NewSlider("Jumppower", "Increases/Lowers the original height of the jump", 500, 50, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+    local LocalPlayerSection = Tab:NewSection("Teams")
+LocalPlayerSection:NewButton("Cop", "you love shooting people for no reason", function()
+    
+    function getNil(name,class) for _,v in pairs(getnilinstances())do if v.ClassName==class and v.Name==name then return v;end end end
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer,
+    [2] = "Bright blue",
+}
+
+workspace.Remote.loadchar:InvokeServer(unpack(args))
+end)
+LocalPlayerSection:NewButton("Prisoner", "classic. i like it", function()
+    
+    local args = {
+    [1] = game:GetService("Players").LocalPlayer,
+    [2] = "Bright orange",
+}
+
+workspace.Remote.loadchar:InvokeServer(unpack(args))
+end)
+--weapons
+local Weapons = Window:NewTab("Weapons")
+local WeaponsSection = Weapons:NewSection("Weapons")
+WeaponsSection:NewDropdown("Give Guns", "honestly it just gives you guns", {"M9", "Remington 870", "AK-47"}, function(q)
+    local A_1 = game:GetService("Workspace")["Prison_ITEMS"].giver[q].ITEMPICKUP
+    local Event = game:GetService("Workspace").Remote.ItemHandler
+    Event:InvokeServer(A_1)
+end)
+    WeaponsSection:NewDropdown("Mod Gun", "gta mod menus in a lego game", {"M9", "Remington 870", "AK-47"}, function(q)
+        local module = nil
+        if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(q) then
+            module = require(game:GetService("Players").LocalPlayer.Backpack[q].GunStates)
+        elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild(q) then
+            module = require(game:GetService("Players").LocalPlayer.Character[q].GunStates)
+        end
+        if module ~= nil then
+            module["MaxAmmo"] = math.huge
+            module["CurrentAmmo"] = math.huge
+            module["StoredAmmo"] = math.huge
+            module["FireRate"] = 0.000001
+            module["Spread"] = 0
+            module["Range"] = math.huge
+            module["Bullets"] = 10
+            module["ReloadTime"] = 0.000001
+            module["AutoFire"] = true
+        end
+    end)
+    local Admin = Window:NewTab("Admin")
+local AdminSection = Admin:NewSection("Admin")
+AdminSection:NewButton("Infinite Yield IY", "infinite yield aka best fe admin", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+end)
+end
